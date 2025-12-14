@@ -87,7 +87,7 @@ async function fetchReview() {
     <div className="flex flex-col items-center min-h-screen bg-[#1996E6] text-white p-6 gap-6">
       {/* Header */}
       <header className="self-start mb-6">
-        <TypingLogo text=" CodEasy." />
+        <TypingLogo text="//CodEasy." />
       </header>
 
       <div className="flex flex-row gap-9 w-full max-w-7xl items-start">
