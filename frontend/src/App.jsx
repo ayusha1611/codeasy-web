@@ -64,7 +64,7 @@ function App() {
   }, []);
 
   async function fetchReview() {
-    const response = await axios.post("http://localhost:3000/ai/get-review/", {
+    const response = await axios.post("https://cod-easy.onrender.com/ai/get-review/", {
       code,
     });
     setReview(response.data);
