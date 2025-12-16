@@ -7,7 +7,7 @@ import rehypeHighlight from "rehype-highlight";
 import "highlight.js/styles/github-dark.css";
 import axios from "axios";
 
-/* -------------------- Typing Logo Component (FIXED) -------------------- */
+/* -------------------- Typing Logo Component -------------------- */
 function TypingLogo({ text = "CodEasy." }) {
   const [displayed, setDisplayed] = useState("");
   const indexRef = useRef(0);
@@ -26,13 +26,12 @@ function TypingLogo({ text = "CodEasy." }) {
     };
 
     type();
-
     return () => clearTimeout(timeoutRef.current);
   }, [text]);
 
   return (
     <h1
-      className="text-5xl font-extrabold text-[#007ACC] text-left"
+      className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#007ACC]"
       style={{
         textShadow: `
           -3px -3px 0 #ffffff,
@@ -62,24 +61,20 @@ function App() {
   useEffect(() => {
     prism.highlightAll();
   }, []);
- const API_URL = import.meta.env.VITE_API_URL;
 
-async function fetchReview() {
-  const response = await axios.post(
-    `${API_URL}/ai/get-review`,
-    { code }
-  );
-  setReview(response.data);
-}
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  async function fetchReview() {
+    const response = await axios.post(`${API_URL}/ai/get-review`, { code });
+    setReview(response.data);
+  }
 
   function handleFileUpload(event) {
     const file = event.target.files[0];
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = (e) => {
-      setCode(e.target.result);
-    };
+    reader.onload = (e) => setCode(e.target.result);
     reader.readAsText(file);
   }
 
@@ -90,33 +85,18 @@ async function fetchReview() {
         <TypingLogo text="//CodEasy." />
       </header>
 
-      <div className="flex flex-row gap-9 w-full max-w-7xl items-start">
+      {/* Responsive Layout */}
+      <div className="flex flex-col min-[970px]:flex-row gap-9 w-full max-w-7xl items-start">
         {/* LEFT: Code Input */}
-        <div className="w-1/2 bg-[#3C3C3C] p-6 rounded-lg shadow-lg border border-[#5A5A5A]">
+        <div className="w-full min-[970px]:w-1/2 bg-[#3C3C3C] p-6 rounded-lg shadow-lg border border-[#5A5A5A]">
           <input
             type="file"
             accept=".js,.py,.css,.cpp,.cs,.ts,.html,.json,.java"
             onChange={handleFileUpload}
-            className="
-    w-full
-    mb-4
-    text-sm
-    text-white
-    rounded-lg
-    cursor-pointer
-    bg-[#5A5A5A]
-    p-2
-    file:mr-4
-    file:py-2
-    file:px-4
-    file:rounded-md
-    file:border-0
-    file:text-sm
-    file:font-semibold
-    file:bg-white
-    file:text-black
-    hover:file:bg-gray-200
-  "
+            className="w-full mb-4 text-sm text-white rounded-lg cursor-pointer bg-[#5A5A5A] p-2
+              file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0
+              file:text-sm file:font-semibold file:bg-white file:text-black
+              hover:file:bg-gray-200"
           />
 
           <div className="border border-gray-600 rounded-lg p-4 bg-[#252526]">
@@ -129,6 +109,8 @@ async function fetchReview() {
               style={{
                 fontFamily: '"Fira Code", monospace',
                 fontSize: 14,
+                whiteSpace: "pre-wrap",
+                wordBreak: "break-word",
               }}
             />
           </div>
@@ -142,21 +124,21 @@ async function fetchReview() {
         </div>
 
         {/* RIGHT: Review Output */}
-        <div className="w-1/2 bg-[#3C3C3C] p-6 rounded-lg shadow-lg border border-[#5A5A5A] overflow-hidden">
-          <div className="prose prose-invert max-w-none break-words">
+        <div className="w-full min-[970px]:w-1/2 bg-[#3C3C3C] p-6 rounded-lg shadow-lg border border-[#5A5A5A]">
+          <div className="prose prose-invert max-w-none break-words overflow-visible">
             <Markdown
               rehypePlugins={[rehypeHighlight]}
               components={{
                 pre: ({ ...props }) => (
                   <pre
                     {...props}
-                    className="whitespace-pre-wrap break-words overflow-hidden"
+                    className="whitespace-pre-wrap break-words overflow-visible"
                   />
                 ),
                 code: ({ ...props }) => (
                   <code
                     {...props}
-                    className="whitespace-pre-wrap break-words"
+                    className="whitespace-pre-wrap break-words overflow-visible"
                   />
                 ),
               }}
